@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>nokq — telegram bot developer</title>
+<meta name="description" content="nokq — telegram bot developer. i build fast and powerful telegram bots." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['Outfit', 'sans-serif'],
+          sans: ['Inter', 'sans-serif'],
+          mono: ['JetBrains Mono', 'monospace'],
+        },
+      },
+    },
+  }
+</script>
+
+<style>
+  html, body { height: 100%; }
+  body {
+    background-color: #07090f;
+    color: #e2e8f5;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-d1 { transition-delay: 0.1s; }
+  .reveal-d2 { transition-delay: 0.2s; }
+  .reveal-d3 { transition-delay: 0.3s; }
+  .reveal-d4 { transition-delay: 0.4s; }
+
+  .glass {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .service-card {
+    transition: border-color 0.2s ease, background 0.2s ease;
+    cursor: default;
+  }
+  .service-card:hover {
+    border-color: rgba(37, 99, 255, 0.3);
+    background: rgba(37, 99, 255, 0.04);
+  }
+
+  .tech-pill {
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+    cursor: default;
+  }
+  .tech-pill:hover {
+    border-color: rgba(37, 99, 255, 0.45);
+    color: #93c5fd;
+    background: rgba(37, 99, 255, 0.06);
+  }
+
+  .btn-blue {
+    background: #2563ff;
+    color: white;
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .btn-blue:hover {
+    background: #3b82f6;
+    box-shadow: 0 0 44px rgba(37, 99, 255, 0.42);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #94a3b8;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+  .btn-ghost:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.2);
+    color: #e2e8f5;
+    transform: translateY(-2px);
+  }
+
+  .btn-fiverr {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #94a3b8;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+  .btn-fiverr:hover {
+    background: rgba(29, 191, 115, 0.1);
+    border-color: rgba(29, 191, 115, 0.35);
+    color: #4ade80;
+    transform: translateY(-2px);
+  }
+
+  .nav-link { transition: color 0.15s ease; }
+  .nav-link:hover { color: #ffffff; }
+
+  .nav-hire {
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: #60a5fa;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .nav-hire:hover {
+    background: rgba(59,130,246,0.1);
+    border-color: rgba(59,130,246,0.55);
+  }
+
+  .footer-icon { color: rgba(255,255,255,0.3); transition: color 0.15s ease; }
+  .footer-icon:hover { color: #ffffff; }
+
+  #site-nav { transition: background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease; }
+  #site-nav.scrolled {
+    background: rgba(7,9,15,0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  #burger span { transition: all 0.3s ease; }
+  #burger.open span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+  #burger.open span:nth-child(2) { opacity: 0; }
+  #burger.open span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+
+  #mobile-menu {
+    background: rgba(7,9,15,0.97);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  #mobile-menu.open { opacity: 1; pointer-events: all; }
+  #mobile-menu a, #mobile-menu button { opacity: 0; transition: opacity 0.15s; }
+  #mobile-menu.open a, #mobile-menu.open button { opacity: 1; }
+
+  @keyframes glow-pulse {
+    0%, 100% { opacity: 0.5; box-shadow: 0 0 4px #2563ff; }
+    50% { opacity: 1; box-shadow: 0 0 10px #2563ff; }
+  }
+  @keyframes hero-breathe {
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50% { opacity: 0.85; transform: scale(1.07); }
+  }
+  .glow-dot { animation: glow-pulse 2.2s ease-in-out infinite; }
+  .hero-glow { animation: hero-breathe 8s ease-in-out infinite; }
+</style>
+</head>
+
+<body class="min-h-full font-sans" style="background:#07090f; color:#e2e8f5;">
+
+  <nav id="site-nav" class="fixed top-0 left-0 right-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <button data-scroll="hero" class="font-mono text-sm font-semibold text-white tracking-widest">
+        nokq<span style="color:#2563ff">.</span>
+      </button>
+
+      <div class="hidden md:flex items-center gap-8">
+        <button data-scroll="about" class="nav-link text-sm text-slate-500 capitalize font-mono tracking-wide">about</button>
+        <button data-scroll="services" class="nav-link text-sm text-slate-500 capitalize font-mono tracking-wide">services</button>
+        <button data-scroll="contact" class="nav-link text-sm text-slate-500 capitalize font-mono tracking-wide">contact</button>
+      </div>
+
+      <a href="https://t.me/yuvsuck" target="_blank" rel="noopener noreferrer"
+         class="nav-hire hidden md:flex items-center gap-2 px-4 py-2 text-sm font-mono rounded-lg">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.94 8.19-2.03 9.57c-.15.67-.54.83-1.09.52l-3-2.21-1.45 1.39c-.16.16-.29.29-.6.29l.21-3.03 5.5-4.97c.24-.21-.05-.33-.37-.12L7.18 14.3 4.22 13.4c-.65-.2-.66-.65.14-.96l11.63-4.49c.54-.2 1.01.13.95.24z"/></svg>
+        hire me
+      </a>
+
+      <button id="burger-btn" class="md:hidden flex flex-col gap-1.5 p-1" aria-label="Toggle menu">
+        <span class="block w-5 h-px bg-white"></span>
+        <span class="block w-5 h-px bg-white"></span>
+        <span class="block w-5 h-px bg-white"></span>
+      </button>
+    </div>
+  </nav>
+  <script>document.getElementById('burger-btn').id = 'burger'</script>
+
+  <div id="mobile-menu" class="fixed inset-0 z-40 md:hidden flex flex-col justify-center items-center gap-8">
+    <button data-scroll="about" class="text-2xl font-display font-semibold text-white capitalize">about</button>
+    <button data-scroll="services" class="text-2xl font-display font-semibold text-white capitalize">services</button>
+    <button data-scroll="contact" class="text-2xl font-display font-semibold text-white capitalize">contact</button>
+    <a href="https://t.me/yuvsuck" target="_blank" rel="noopener noreferrer"
+       class="mt-4 flex items-center gap-2 px-6 py-3 rounded-xl font-mono text-sm text-white btn-blue" id="mobile-hire">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.94 8.19-2.03 9.57c-.15.67-.54.83-1.09.52l-3-2.21-1.45 1.39c-.16.16-.29.29-.6.29l.21-3.03 5.5-4.97c.24-.21-.05-.33-.37-.12L7.18 14.3 4.22 13.4c-.65-.2-.66-.65.14-.96l11.63-4.49c.54-.2 1.01.13.95.24z"/></svg>
+      hire me
+    </a>
+  </div>
+
+  <section id="hero" class="relative min-h-screen flex flex-col justify-center overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" style="background-image:radial-gradient(rgba(255,255,255,0.032) 1px, transparent 1px); background-size:30px 30px;"></div>
+    <div class="absolute pointer-events-none hero-glow" style="top:-20%; left:50%; transform:translateX(-50%); width:80vw; height:70vh; background:radial-gradient(ellipse at center, rgba(37,99,255,0.18) 0%, transparent 70%);"></div>
+    <div class="absolute right-0 top-1/2 pointer-events-none" style="transform:translateY(-50%); width:40vw; height:60vh; background:radial-gradient(ellipse at right center, rgba(37,99,255,0.07) 0%, transparent 60%);"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6 pt-28 pb-24">
+      <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full text-xs font-mono mb-8 reveal"
+           style="background:rgba(37,99,255,0.09); border:1px solid rgba(37,99,255,0.22); color:#93c5fd;">
+        <span class="w-1.5 h-1.5 rounded-full flex-shrink-0 glow-dot" style="background:#2563ff;"></span>
+        nokq · telegram bot developer · backend · automation
+      </div>
+
+      <h1 class="font-display font-extrabold text-white lowercase reveal reveal-d1"
+          style="font-size:clamp(2.6rem, 7.5vw, 6.5rem); line-height:1.04; letter-spacing:-0.03em;">
+        telegram bot<br />
+        <span style="color:#2563ff">developer</span>
+      </h1>
+
+      <p class="mt-6 text-slate-400 max-w-lg reveal reveal-d2" style="font-size:clamp(1rem, 2vw, 1.2rem); line-height:1.65;">
+        i build fast and powerful telegram bots
+      </p>
+
+      <div class="mt-10 flex flex-wrap gap-4 reveal reveal-d3">
+        <button data-scroll="services" class="btn-blue px-7 py-3.5 rounded-xl text-sm font-mono font-medium">what i build</button>
+        <button data-scroll="contact" class="btn-ghost px-7 py-3.5 rounded-xl text-sm font-mono font-medium">contact me</button>
+      </div>
+
+      <div class="mt-24 flex items-center gap-3 reveal reveal-d4">
+        <div class="h-px w-8" style="background:rgba(255,255,255,0.15);"></div>
+        <span class="text-xs font-mono text-slate-700 uppercase tracking-widest">scroll</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="py-28 relative">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="max-w-2xl">
+        <div class="text-xs font-mono text-blue-600 uppercase tracking-widest mb-5 reveal">01 — about</div>
+        <h2 class="font-display font-bold text-white mb-6 reveal reveal-d1" style="font-size:clamp(1.8rem, 4vw, 2.8rem); letter-spacing:-0.025em;">who i am</h2>
+        <p class="text-slate-400 leading-relaxed mb-3 reveal reveal-d2" style="font-size:1.05rem;">
+          i create telegram bots, automation systems and custom backend solutions.
+        </p>
+        <p class="text-slate-500 leading-relaxed reveal reveal-d2" style="font-size:1rem;">
+          focused on clean code, fast delivery, and bots that actually work the way they should.
+        </p>
+      </div>
+
+      <div class="mt-12 reveal reveal-d3">
+        <div class="text-xs font-mono text-slate-700 uppercase tracking-widest mb-4">tech stack</div>
+        <div class="flex flex-wrap gap-2.5">
+          <span class="tech-pill px-4 py-2 text-sm font-mono rounded-lg" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); color:#94a3b8;">Node.js</span>
+          <span class="tech-pill px-4 py-2 text-sm font-mono rounded-lg" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); color:#94a3b8;">JavaScript</span>
+          <span class="tech-pill px-4 py-2 text-sm font-mono rounded-lg" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); color:#94a3b8;">Telegraf</span>
+          <span class="tech-pill px-4 py-2 text-sm font-mono rounded-lg" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); color:#94a3b8;">SQLite</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="py-28">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="mb-14">
+        <div class="text-xs font-mono text-blue-600 uppercase tracking-widest mb-5 reveal">02 — services</div>
+        <h2 class="font-display font-bold text-white reveal reveal-d1" style="font-size:clamp(1.8rem, 4vw, 2.8rem); letter-spacing:-0.025em;">what i build</h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="service-card glass rounded-2xl p-6 reveal reveal-d1">
+          <div class="text-xs font-mono mb-4" style="color:rgba(37,99,255,0.5);">01</div>
+          <div class="font-display font-semibold text-white text-sm mb-1.5">Telegram Bots</div>
+          <div class="text-xs text-slate-600 leading-relaxed">Custom bots for any purpose</div>
+        </div>
+        <div class="service-card glass rounded-2xl p-6 reveal reveal-d2">
+          <div class="text-xs font-mono mb-4" style="color:rgba(37,99,255,0.5);">02</div>
+          <div class="font-display font-semibold text-white text-sm mb-1.5">Admin Panels</div>
+          <div class="text-xs text-slate-600 leading-relaxed">Full management interfaces</div>
+        </div>
+        <div class="service-card glass rounded-2xl p-6 reveal reveal-d3">
+          <div class="text-xs font-mono mb-4" style="color:rgba(37,99,255,0.5);">03</div>
+          <div class="font-display font-semibold text-white text-sm mb-1.5">Databases</div>
+          <div class="text-xs text-slate-600 leading-relaxed">Optimized data architecture</div>
+        </div>
+        <div class="service-card glass rounded-2xl p-6 reveal reveal-d4">
+          <div class="text-xs font-mono mb-4" style="color:rgba(37,99,255,0.5);">04</div>
+          <div class="font-display font-semibold text-white text-sm mb-1.5">API Integrations</div>
+          <div class="text-xs text-slate-600 leading-relaxed">Third-party connectors</div>
+        </div>
+        <div class="service-card glass rounded-2xl p-6 reveal reveal-d1">
+          <div class="text-xs font-mono mb-4" style="color:rgba(37,99,255,0.5);">05</div>
+          <div class="font-display font-semibold text-white text-sm mb-1.5">Automation</div>
+          <div class="text-xs text-slate-600 leading-relaxed">Workflow &amp; process automation</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="py-28 relative overflow-hidden">
+    <div class="absolute bottom-0 left-1/2 pointer-events-none" style="transform:translateX(-50%); width:80vw; height:60vh; background:radial-gradient(ellipse at center bottom, rgba(37,99,255,0.12) 0%, transparent 65%);"></div>
+    <div class="relative max-w-6xl mx-auto px-6">
+      <div class="max-w-xl">
+        <div class="text-xs font-mono text-blue-600 uppercase tracking-widest mb-5 reveal">03 — contact</div>
+        <h2 class="font-display font-bold text-white mb-4 reveal reveal-d1" style="font-size:clamp(2rem, 5vw, 3.5rem); letter-spacing:-0.03em; line-height:1.1;">
+          have a project<br />in mind?
+        </h2>
+        <p class="text-slate-500 mb-12 reveal reveal-d2" style="font-size:1rem;">reach out — i respond fast</p>
+      </div>
+
+      <div class="flex flex-wrap gap-3 reveal reveal-d3">
+        <a href="https://t.me/yuvsuck" target="_blank" rel="noopener noreferrer"
+           class="btn-blue inline-flex items-center gap-3 px-6 py-4 rounded-xl text-sm font-mono font-medium text-white">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.94 8.19-2.03 9.57c-.15.67-.54.83-1.09.52l-3-2.21-1.45 1.39c-.16.16-.29.29-.6.29l.21-3.03 5.5-4.97c.24-.21-.05-.33-.37-.12L7.18 14.3 4.22 13.4c-.65-.2-.66-.65.14-.96l11.63-4.49c.54-.2 1.01.13.95.24z"/></svg>
+          @yuvsuck
+        </a>
+
+        <a href="https://github.com/Lumenia-bit" target="_blank" rel="noopener noreferrer"
+           class="btn-ghost inline-flex items-center gap-3 px-6 py-4 rounded-xl text-sm font-mono font-medium">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.11-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.65.24 2.87.12 3.17.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          Lumenia-bit
+        </a>
+
+        <a href="https://www.fiverr.com/s/43GABdm" target="_blank" rel="noopener noreferrer"
+           class="btn-fiverr inline-flex items-center gap-3 px-6 py-4 rounded-xl text-sm font-mono font-medium">
+          <svg width="18" height="18" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+            <text x="2" y="24" font-size="22" font-weight="700" font-family="'Outfit', sans-serif">f</text>
+            <circle cx="25" cy="7" r="3" />
+          </svg>
+          nokq on fiverr
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-8" style="border-top:1px solid rgba(255,255,255,0.06);">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="font-mono text-sm text-slate-700">© 2026 <span class="text-slate-500">nokq</span></div>
+      <div class="flex items-center gap-5">
+        <a href="https://github.com/Lumenia-bit" target="_blank" rel="noopener noreferrer" class="footer-icon" aria-label="GitHub">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.11-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.65.24 2.87.12 3.17.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <a href="https://t.me/yuvsuck" target="_blank" rel="noopener noreferrer" class="footer-icon" aria-label="Telegram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.94 8.19-2.03 9.57c-.15.67-.54.83-1.09.52l-3-2.21-1.45 1.39c-.16.16-.29.29-.6.29l.21-3.03 5.5-4.97c.24-.21-.05-.33-.37-.12L7.18 14.3 4.22 13.4c-.65-.2-.66-.65.14-.96l11.63-4.49c.54-.2 1.01.13.95.24z"/></svg>
+        </a>
+        <a href="https://www.fiverr.com/s/43GABdm" target="_blank" rel="noopener noreferrer" class="footer-icon font-mono text-xs font-bold" aria-label="Fiverr">fv</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('[data-scroll]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-scroll')
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+        closeMobileMenu()
+      })
+    })
+
+    const nav = document.getElementById('site-nav')
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60)
+    }, { passive: true })
+
+    const burger = document.getElementById('burger')
+    const mobileMenu = document.getElementById('mobile-menu')
+    function closeMobileMenu() {
+      burger.classList.remove('open')
+      mobileMenu.classList.remove('open')
+    }
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open')
+      mobileMenu.classList.toggle('open')
+    })
+    document.getElementById('mobile-hire').addEventListener('click', closeMobileMenu)
+
+    const revealEls = document.querySelectorAll('.reveal')
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') })
+    }, { threshold: 0.1 })
+    revealEls.forEach(el => observer.observe(el))
+  </script>
+</body>
+</html>
